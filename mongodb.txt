@@ -1,0 +1,18 @@
+db.goods.insertMany([
+  {ItemName: 'axe', Category: 'garden', price: 150.00, qty: 10},
+  {ItemName: 'saw', Category: 'garden', price: 250.00, qty: 5},
+  {ItemName: 'hummer', Category: 'home', price: 100.00, qty: 12},
+  {ItemName: 'drill', Category: 'home', price: 1250.00, qty: 3},
+])
+
+db.goods.aggregate([
+  {$project:{Category: 1, Amount:{$multiply:['$qty','$price']}}},
+  {$group:{_id: "$Category", AmountTotal:{$sum: '$Amount'}}}
+])
+
+db.goods.find({ItemName: "axe"})
+db.goods.update({ItemName: "axe"}, {$inc:{qty: -1}})
+db.goods.find({ItemName: "axe"})
+
+
+db.goods.find().sort({price:-1}).limit(2)
